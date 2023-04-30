@@ -96,4 +96,33 @@ body {
     text-align: center;
   }
   
+  .message-box {
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+  
+  .message-input {
+    width: 70%;
+    display: inline-block;
+  }
+  
+  .message-send {
+    width: 25%;
+    display: inline-block;
+    text-align: center;
+    padding: 10px;
+    margin-left: 5px;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .message-send:hover {
+    background-color: #3e8e41;
+  }
   

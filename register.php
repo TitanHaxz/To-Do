@@ -1,3 +1,44 @@
+<?php 
+
+  require_once('database.php');
+
+  if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    if($data = $conn -> prepare('SELECT id, username, password FROM users WHERE username = ?')){
+      $data -> bind_param('s', $_POST['username']);
+      $data -> execute();
+      $data -> store_result();
+
+      if($data -> num_rows > 0){
+        echo '
+          <script type="text/javascript">
+            alert("Username exists, please choose another!")
+          </script>
+        ';
+      } else if(preg_match('/^[a-zA-Z0-9]+$/', $_POST['username']) == 0) {
+        echo '
+          <script type="text/javascript">
+            alert("Username exists, please choose another!")
+          </script>
+        ';
+      } else {
+        if($data = $conn -> prepare('INSERT INTO users (username, password) VALUES (?, ?)')){
+          $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+          $data -> bind_param('ss', $_POST['username'], $password);
+          $data -> execute();
+          
+          header("Location: index.php");
+          exit;
+          
+        }
+      }
+
+    $data -> close();
+    }
+  }
+
+?>
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -19,10 +60,10 @@
     <div class="login-box">
       <h2>To-Do List Uygulaması</h2>
       <h3>Kayıt Ol</h3>
-      <form action="giris.php" method="post">
+      <form method="post" autocomplete="off">
         <div class="form-group">
-          <label for="nickname">Kullanıcı Adı</label>
-          <input type="text" id="nickname" name="nickname" placeholder="Kullanıcı adınızı girin">
+          <label for="username">Kullanıcı Adı</label>
+          <input type="text" id="username" name="username" placeholder="Kullanıcı adınızı girin">
         </div>
         <div class="form-group">
           <label for="password">Şifre</label>
